@@ -4,13 +4,12 @@ import Card from '../Components/Card'
 
 function Deposit(){
     const [show, setShow]         = useState(true);
-    const [status, setStatus]     = useState('');
-    const [deposit, setDeposit]   = useState('');
+    const [status, setStatus]     = useState("");
+    const [deposit, setDeposit]   = useState("");
     const [balance, setBalance]   = useState(100);
     const [disabled, setDisabled] = useState(true);
     const ctx = useContext(UserContext); 
 
-  
     const validate = amount => {
       if(!amount) {
         setStatus('Error: Please enter a value');
@@ -25,48 +24,71 @@ function Deposit(){
         return false;
       }
       return true;
-    }
+   ; }
   
     const depositMoney = amount => {
       if (!validate(amount)) return;
       setBalance(Number(balance) + Number(amount));
       setShow(false);
-      setStatus('');
-      ctx.users.push(Number(amount) + Number(balance));
-    }
-  
+      setStatus("");
+      const targetUser = ctx.loggedInUser;
+      const newArray = ctx.users.map(user => {
+        if (user.email === targetUser) {
+          user.balance += Number(amount)
+        }
+        return user;
+      })
+      ctx.user = newArray;
+      return alert("Success!")
+    };
   
     function clearForm(){
-      setDeposit('');
+      setDeposit("");
       setShow(true);
     }
   
     React.useEffect(() => {
-          if (!deposit) {
-              setDisabled(true);
-          }
-          else {
-              setDisabled(false);
-          }
-      }, [deposit]);
+      if (!deposit) {
+        setDisabled(true);
+      } else {
+        setDisabled(false);
+      }
+    }, [deposit]);
   
     return (
       <Card
         bgcolor="primary"
         header="Deposit"
         status={status}
-        body={show ? (  
+        body={
+          show ? (  
                 <>
                 <h5>Balance: ${balance}</h5>
                 <br/>
-                Deposit<br/>
-                <input type="deposit" className="form-control" id="deposit" placeholder="Amount" value={deposit} onChange={e => setDeposit(e.currentTarget.value)}/><br/>
-                <button type="submit" className="btn btn-light" onClick={() => depositMoney(deposit)} disabled={disabled}>Deposit</button>
+                Deposit
+                <br/>
+                <input 
+                type="deposit" 
+                className="form-control" 
+                id="deposit" 
+                placeholder="Amount" 
+                value={deposit} 
+                onChange={e => setDeposit(e.currentTarget.value)}
+                />
+
+                <br/>
+                <button 
+                type="submit" 
+                className="btn btn-light" 
+                onClick={() => depositMoney(deposit)} 
+                disabled={disabled}>Deposit</button>
                 </>
-              ):(
+              ) : (
                 <>
                 <h5>Success</h5>
-                <button type="submit" className="btn btn-light" onClick={clearForm}>Make another deposit?</button>
+                <button type="submit" 
+                className="btn btn-light" 
+                onClick={clearForm}>Make another deposit?</button>
                 </>
               )}
       />
