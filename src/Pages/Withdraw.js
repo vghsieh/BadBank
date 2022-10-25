@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import UserContext from "../Components/UserContext";
 import Card from "../Components/Card";
 
@@ -8,9 +8,9 @@ function Withdraw() {
   const [withdraw, setWithdraw] = useState("");
   const [balance, setBalance] = useState(100);
   const [disabled, setDisabled] = useState(true);
-  const ctx = React.useContext(UserContext);
+  const ctx = useContext(UserContext);
 
-  const validate = (amount) => {
+  const validate = amount => {
     if (!amount) {
       setStatus("Error: Please enter a value");
       return false;
@@ -26,12 +26,12 @@ function Withdraw() {
     return true;
   };
 
-  const withdrawMoney = (amount) => {
+  const withdrawMoney = amount => {
     if (!validate(amount)) return;
     setBalance(Number(balance) - Number(amount));
     setShow(false);
     setStatus("");
-   const targetUser = ctx.loggedInUser; //the logged in user account email
+   const targetUser = ctx.loggedInUser; //the logged in user email account
    const newArray = ctx.users.map(user => {
     if (user.email === targetUser){
       user.balance -= Number(amount)
@@ -64,9 +64,9 @@ function Withdraw() {
         show ? (
           <>
             <h5>Balance: ${balance}</h5>
-            <br />
+            <br/>
             Withdraw
-            <br />
+            <br/>
             <input
               type="deposit"
               className="form-control"
@@ -80,17 +80,15 @@ function Withdraw() {
               type="submit"
               className="btn btn-light"
               onClick={() => withdrawMoney(withdraw)}
-              disabled={disabled}
-            >
-              Withdraw
-            </button>
+              disabled={disabled}>Withdraw</button>
           </>
         ) : (
           <>
             <h5>Success</h5>
-            <button type="submit" className="btn btn-light" onClick={clearForm}>
-              Make another withdrawal?
-            </button>
+            <button type="submit" 
+            className="btn btn-light" 
+            onClick={clearForm}>
+              Make another withdrawal?</button>
           </>
         )
       }
@@ -100,16 +98,3 @@ function Withdraw() {
 
 export default Withdraw;
 
-
-// cinst users = {
-//   [name: "Peter", ]
-// }
-
-// const newArrray = users.map(user => {
-//   if user.email ===email) {
-//     users.balance = userbalance - withdrawalamt
-//   }
-//   return user
-// })
-
-// ctx.users = newArray

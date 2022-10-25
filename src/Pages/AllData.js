@@ -1,5 +1,5 @@
 import React from 'react'
-import UserContext from '../Components/UserContext'
+import UserContext from '../Components/UserContext';
 
 export const AllData = () => {
   const ctx = React.useContext(UserContext);
@@ -9,8 +9,6 @@ export const AllData = () => {
     <>
       <h2>All Data</h2>
       {JSON.stringify(ctx.users)}
-      cts
-
     </>
   )
 }

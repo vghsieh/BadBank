@@ -6,14 +6,10 @@ import Card from '../Components/Card'
 export const Login = () => {
     const [show, setShow]         = useState(true);
     const [status, setStatus]     = useState('');
-   
     const [email, setEmail]       = useState('');
     const [password, setPassword] = useState('');
     const ctx = useContext(UserContext);  
   
-
-    
-   
 
     function validateEmail(field, label){
         if(!field){
@@ -44,20 +40,8 @@ export const Login = () => {
         return true;
     }
     
-    function validatePwLength (field, label) {
-      if (field.length < 6) {
-        setStatus('Error: ' + label);
-        setTimeout(() => setStatus(''),3000);
-        return false;
-      }
-      return true;
-    }
-    
-
-  
     function handleCreate(){
       console.log(email,password);
-
       if (!validateEmail(email,    'Email required'))    return;
       if (!valRealEmail(email,    'Enter a valid email'))    return;
       if (!validatePassword(password, 'Password required')) return;
@@ -72,17 +56,14 @@ if (isValid === undefined) {
     return alert("User does not exist")
 }
 ctx.loggedInUser = isValid.email
-    }
+}
 
+// function clearForm(){
+//   setEmail('');
+//   setPassword('');
+//   setShow(true);
+// }
 
-  
-    function clearForm(){
-    
-      setEmail('');
-      setPassword('');
-      setShow(true);
-    }
-  
     return (
       <Card
         bgcolor="primary"
