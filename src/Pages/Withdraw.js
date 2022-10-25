@@ -31,7 +31,7 @@ function Withdraw() {
     setBalance(Number(balance) - Number(amount));
     setShow(false);
     setStatus("");
-   const targetUser = ctx.loggedInUser;
+   const targetUser = ctx.loggedInUser; //the logged in user account email
    const newArray = ctx.users.map(user => {
     if (user.email === targetUser){
       user.balance -= Number(amount)
