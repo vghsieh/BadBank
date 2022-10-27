@@ -58,11 +58,11 @@ if (isValid === undefined) {
 ctx.loggedInUser = isValid.email
 }
 
-// function clearForm(){
-//   setEmail('');
-//   setPassword('');
-//   setShow(true);
-// }
+function clearForm(){
+  setEmail('');
+  setPassword('');
+  setShow(true);
+}
 
     return (
       <Card

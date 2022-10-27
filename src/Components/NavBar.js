@@ -8,11 +8,10 @@ import {
 } from 'react-router-dom';
 import  Home  from '../Pages/Home';
 import { CreateAccount } from '../Pages/CreateAccount';
+import { Login} from '../Pages/Login';
 import Deposit from '../Pages/Deposit';
 import Withdraw from '../Pages/Withdraw';
 import { AllData }  from '../Pages/AllData';
-import { Login} from '../Pages/Login';
-
 
 
 function NavBar () {
@@ -25,10 +24,10 @@ function NavBar () {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/createaccount">Create Account</Nav.Link>
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/deposit">Deposit</Nav.Link>
               <Nav.Link as={Link} to="/withdraw">Withdraw</Nav.Link>
               <Nav.Link as={Link} to="/alldata">All Data</Nav.Link>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
             </Nav>
           </Container>
         </Navbar>
@@ -37,10 +36,11 @@ function NavBar () {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/createAccount" element={<CreateAccount />}/>
+            <Route path="/login" element={<Login />}/>
             <Route path="/deposit" element={<Deposit />}/>
             <Route path="/withdraw" element={<Withdraw />}/>
             <Route path="/alldata" element={<AllData />}/>
-            <Route path="/login" element={<Login />}/>
+            
           </Routes>
         </div>
       </BrowserRouter>
