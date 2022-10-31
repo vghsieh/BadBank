@@ -1,6 +1,12 @@
 import React, { useState, useContext} from 'react'
 import UserContext from '../Components/UserContext';
 import Card from '../Components/Card'
+import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";
+import { useAuth } from '../firebase/auth';
+// import { auth } from '../firebase/firebase'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+
 
 
 export const Login = () => {
@@ -8,6 +14,7 @@ export const Login = () => {
     const [status, setStatus]     = useState('');
     const [email, setEmail]       = useState('');
     const [password, setPassword] = useState('');
+    const { authUser, isLoading } = useAuth();
     const ctx = useContext(UserContext);  
   
 
@@ -40,6 +47,8 @@ export const Login = () => {
         return true;
     }
     
+    
+
     function handleCreate(){
       console.log(email,password);
       if (!validateEmail(email,    'Email required'))    return;
@@ -56,13 +65,26 @@ if (isValid === undefined) {
     return alert("User does not exist")
 }
 ctx.loggedInUser = isValid.email
+const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      });
 }
 
-function clearForm(){
-  setEmail('');
-  setPassword('');
-  setShow(true);
-}
+// function clearForm(){
+//   setEmail('');
+//   setPassword('');
+//   setShow(true);
+// }
 
     return (
       <Card
