@@ -1,6 +1,9 @@
 import React, { useState, useContext} from 'react'
 import UserContext from '../Components/UserContext';
 import Card from '../Components/Card'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+
 
 
 export const CreateAccount = () => {
@@ -60,6 +63,13 @@ export const CreateAccount = () => {
       return true;
     }
     
+    function writeUserData(db, name, userId, balance) {
+      set(ref(db, 'users/' + userId), {
+        name: name,
+        userId: userId,
+        balance: balance,
+      });
+    }
 
   
     function handleCreate(){
@@ -69,7 +79,24 @@ export const CreateAccount = () => {
       if (!valRealEmail(email,    'Enter a valid email'))    return;
       if (!validatePassword(password, 'Password required')) return;
       if (!validatePwLength(password, 'Password must be 6 or more characters')) return;
-      ctx.users.push({name,email,password,balance:100});
+      // ctx.users.push({name,email,password,balance:100});
+      const auth = getAuth();
+      let userId = ''
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+    userId = user.uid;
+    const database = getDatabase();
+    writeUserData(database, userId, 100)
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode);
+    console.log(errorMessage);
+  });
       setShow(false);
     }    
   
