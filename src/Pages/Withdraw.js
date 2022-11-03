@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import UserContext from "../Components/UserContext";
 import Card from "../Components/Card";
+import { set, ref, onValue } from "firebase/database";
+import { database } from "../firebase/firebase";
 
 function Withdraw() {
   const [show, setShow] = useState(true);
@@ -31,14 +33,11 @@ function Withdraw() {
     setBalance(Number(balance) - Number(amount));
     setShow(false);
     setStatus("");
-   const targetUser = ctx.loggedInUser; //the logged in user email account
-   const newArray = ctx.users.map(user => {
-    if (user.email === targetUser){
-      user.balance -= Number(amount)
-    }
-    return user;
-   })
-   ctx.user = newArray;
+    set(ref(database, 'users/' + ctx.loggedInUser.id),{
+      email: ctx.loggedInUser.email,
+      userId: ctx.loggedInUser.id,
+      balance: Number(balance) - Number(amount),
+    } )
    return alert("Success!")
   };
 
@@ -54,6 +53,15 @@ function Withdraw() {
       setDisabled(false);
     }
   }, [withdraw]);
+
+  React.useEffect(() => {
+    const userDataRef = ref(database, 'users/' + ctx.loggedInUser.id);
+    onValue(userDataRef, (snapshot) => {
+const data = snapshot.val();
+setBalance(data.balance)
+})
+  }, [])
+
 
   return (
     <Card
