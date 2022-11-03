@@ -3,6 +3,8 @@ import UserContext from '../Components/UserContext';
 import Card from '../Components/Card'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
+import { doc, setDoc } from "firebase/firestore"; 
+import { database } from "../firebase/firebase";
 
 
 
@@ -63,16 +65,16 @@ export const CreateAccount = () => {
       return true;
     }
     
-    function writeUserData(db, name, userId, balance) {
-      set(ref(db, 'users/' + userId), {
-        name: name,
-        userId: userId,
-        balance: balance,
-      });
-    }
+    // async function writeUserData(db, name, userId, balance) {
+    //   await setDoc(doc(db, 'users', userId), {
+    //     name: name,
+    //     userId: userId,
+    //     balance: balance,
+    //   });
+    // }
 
   
-    function handleCreate(){
+    async function handleCreate(){
       console.log(name,email,password);
       if (!validateName(name,     'Name required'))     return;
       if (!validateEmail(email,    'Email required'))    return;
@@ -83,13 +85,19 @@ export const CreateAccount = () => {
       const auth = getAuth();
       let userId = ''
 createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
+  .then(async (userCredential) => {
     // Signed in 
     const user = userCredential.user;
     console.log(user);
     userId = user.uid;
-    const database = getDatabase();
-    writeUserData(database, userId, 100)
+    const userEmail = user.email
+
+    await set(ref(database, 'users/' + userId),{
+      name: name,
+      email: userEmail,
+      userId: userId,
+      balance: 100,
+    } )
   })
   .catch((error) => {
     const errorCode = error.code;
