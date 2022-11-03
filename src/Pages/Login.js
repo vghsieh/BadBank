@@ -56,20 +56,26 @@ export const Login = () => {
       if (!validatePassword(password, 'Password required')) return;
 
 
-const isValid = ctx.users.find(user => {
-    if (user.email === email && user.password === password) {
-        return user
-    } 
-});
-if (isValid === undefined) {
-    return alert("User does not exist")
-}
-ctx.loggedInUser = isValid.email
+// const isValid = ctx.users.find(user => {
+//     if (user.email === email && user.password === password) {
+//         return user
+//     } 
+// });
+// if (isValid === undefined) {
+//     return alert("User does not exist")
+// }
+// ctx.loggedInUser = isValid.email
 const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
+        const loggedInUser = {
+          email: user.email,
+          id: user.uid
+        }
+        ctx.loggedInUser = loggedInUser;
+        alert (`Welcome ${loggedInUser.email}`)
         console.log(user)
       })
       .catch((error) => {
