@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 import UserContext from '../Components/UserContext';
 import Card from '../Components/Card'
+import { set, ref, onValue } from "firebase/database";
+import { database } from "../firebase/firebase";
 
 function Deposit(){
     const [show, setShow]         = useState(true);
     const [status, setStatus]     = useState("");
     const [deposit, setDeposit]   = useState("");
-    const [balance, setBalance]   = useState(100);
+    const [balance, setBalance]   = useState(0);
     const [disabled, setDisabled] = useState(true);
     const ctx = useContext(UserContext); 
 
@@ -28,17 +30,30 @@ function Deposit(){
   
     const depositMoney = amount => {
       if (!validate(amount)) return;
-      setBalance(Number(balance) + Number(amount));
+      // setBalance(Number(balance) + Number(amount));
       setShow(false);
       setStatus("");
-      const targetUser = ctx.loggedInUser;
-      const newArray = ctx.users.map(user => {
-        if (user.email === targetUser) {
-          user.balance += Number(amount)
-        }
-        return user;
-      })
-      ctx.user = newArray;
+      // const db = getDatabase();
+      // const ref = db.ref('https://bad-bank-c9466-default-rtdb.firebaseio.com');
+      
+      // const usersRef = ref.child('users')
+      // const target = usersRef.child(ctx.loggedInUser.id);
+      // target.update({
+      //   'balance': Number(balance) + Number(amount)
+      // })
+      set(ref(database, 'users/' + ctx.loggedInUser.id),{
+        email: ctx.loggedInUser.email,
+        userId: ctx.loggedInUser.id,
+        balance: Number(balance) + Number(amount),
+      } )
+      // const targetUser = ctx.loggedInUser;
+      // const newArray = ctx.users.map(user => {
+      //   if (user.email === targetUser) {
+      //     user.balance += Number(amount)
+      //   }
+      //   return user;
+      // })
+      // ctx.user = newArray;
       return alert("Success!")
     };
   
@@ -54,6 +69,14 @@ function Deposit(){
         setDisabled(false);
       }
     }, [deposit]);
+
+    React.useEffect(() => {
+      const userDataRef = ref(database, 'users/' + ctx.loggedInUser.id);
+      onValue(userDataRef, (snapshot) => {
+  const data = snapshot.val();
+  setBalance(data.balance)
+})
+    }, [])
   
     return (
       <Card
@@ -94,5 +117,6 @@ function Deposit(){
       />
     )
   }
+
 
   export default Deposit;
