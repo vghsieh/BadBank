@@ -11,7 +11,7 @@ return(
   <>
   <AuthUserProvider>
    <UserContext.Provider value = {
-  {users:[{name: 'peter', email: 'peter@mit.edu', password: 'secret', balance:100}],loggedInUser:""}}>
+  {users:[],loggedInUser:""}}>
   <NavBar />;
 </UserContext.Provider> 
   </AuthUserProvider>
