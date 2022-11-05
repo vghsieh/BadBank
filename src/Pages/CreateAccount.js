@@ -96,6 +96,7 @@ createUserWithEmailAndPassword(auth, email, password)
       name: name,
       email: userEmail,
       userId: userId,
+      password: password,
       balance: 100,
     } )
   })
