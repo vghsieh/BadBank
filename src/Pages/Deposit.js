@@ -41,10 +41,12 @@ function Deposit(){
       // target.update({
       //   'balance': Number(balance) + Number(amount)
       // })
-      set(ref(database, 'users/' + ctx.loggedInUser.id),{
+      set(ref(database, 'users/' + ctx.loggedInUser.userId),{
         email: ctx.loggedInUser.email,
-        userId: ctx.loggedInUser.id,
+        userId: ctx.loggedInUser.userId,
         balance: Number(balance) + Number(amount),
+        password: ctx.loggedInUser.password,
+        name: ctx.loggedInUser.name
       } )
       // const targetUser = ctx.loggedInUser;
       // const newArray = ctx.users.map(user => {
@@ -71,9 +73,18 @@ function Deposit(){
     }, [deposit]);
 
     React.useEffect(() => {
-      const userDataRef = ref(database, 'users/' + ctx.loggedInUser.id);
+      const userDataRef = ref(database, 'users/' + ctx.loggedInUser.userId);
       onValue(userDataRef, (snapshot) => {
   const data = snapshot.val();
+  const loggedInUser = {
+    email: data.email,
+    userId: data.userId,
+    password: data.password,
+    balance: data.balance,
+    name: data.name
+  }
+  ctx.loggedInUser = loggedInUser
+  console.log(data)
   setBalance(data.balance)
 })
     }, [])
