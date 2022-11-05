@@ -72,11 +72,11 @@ const auth = getAuth();
         const user = userCredential.user;
         const loggedInUser = {
           email: user.email,
-          id: user.uid
+          userId: user.uid,
+          password: password
         }
         ctx.loggedInUser = loggedInUser;
         alert (`Welcome ${loggedInUser.email}`)
-        console.log(user)
       })
       .catch((error) => {
         const errorCode = error.code;
