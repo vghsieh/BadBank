@@ -12,9 +12,14 @@ import { Login} from '../Pages/Login';
 import Deposit from '../Pages/Deposit';
 import Withdraw from '../Pages/Withdraw';
 import { AllData }  from '../Pages/AllData';
-
+import UserContext from './UserContext';
 
 function NavBar () {
+  const ctx = React.useContext(UserContext); 
+  const onLogout = () => {
+    ctx.loggedInUser = ""
+    window.location.href("/")
+  }
     return (
         <BrowserRouter>
         <div>
@@ -27,7 +32,9 @@ function NavBar () {
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
               <Nav.Link as={Link} to="/deposit">Deposit</Nav.Link>
               <Nav.Link as={Link} to="/withdraw">Withdraw</Nav.Link>
+              <Nav.Link as={Link} to="/"><span onClick={onLogout}>Logout</span></Nav.Link>
               <Nav.Link as={Link} to="/alldata">All Data</Nav.Link>
+              
             </Nav>
           </Container>
         </Navbar>
