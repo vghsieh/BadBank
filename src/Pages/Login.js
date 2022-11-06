@@ -3,7 +3,7 @@ import UserContext from '../Components/UserContext';
 import Card from '../Components/Card'
 import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";
 import { useAuth } from '../firebase/auth';
-// import { auth } from '../firebase/firebase'
+import { auth } from '../firebase/firebase'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
@@ -56,15 +56,6 @@ export const Login = () => {
       if (!validatePassword(password, 'Password required')) return;
 
 
-// const isValid = ctx.users.find(user => {
-//     if (user.email === email && user.password === password) {
-//         return user
-//     } 
-// });
-// if (isValid === undefined) {
-//     return alert("User does not exist")
-// }
-// ctx.loggedInUser = isValid.email
 const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -85,12 +76,6 @@ const auth = getAuth();
         console.log(errorMessage);
       });
 }
-
-// function clearForm(){
-//   setEmail('');
-//   setPassword('');
-//   setShow(true);
-// }
 
     return (
       <Card
