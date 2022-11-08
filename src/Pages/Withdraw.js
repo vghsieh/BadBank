@@ -8,7 +8,7 @@ function Withdraw() {
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState("");
   const [withdraw, setWithdraw] = useState("");
-  const [balance, setBalance] = useState(100);
+  const [balance, setBalance] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const ctx = useContext(UserContext);
 
